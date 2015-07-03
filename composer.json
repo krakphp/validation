@@ -1,0 +1,45 @@
+{
+    "name": "krak/validation",
+    "description": "Functional validation library",
+    "type": "library",
+    "homepage": "http://gitlab.bighead.net/krak/validation",
+    "keywords": [
+        "validation",
+        "validator",
+        "functional"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "RJ Garcia",
+            "email": "rj@bighead.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Krak\\Validation\\": "src"
+        },
+        "files": [
+            "src/doctrine_validators.php",
+            "src/symfony_validators.php",
+            "src/type_validators.php",
+            "src/util_validators.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Krak\\Tests\\": "tests"
+        }
+    },
+    "require-dev": {
+        "doctrine/common": "^2.5",
+        "phake/phake": "^2.0",
+        "phpunit/phpunit": "~4.0",
+        "symfony/validator": "^2.7",
+        "symfony/var-dumper": "^2.0"
+    },
+    "suggest": {
+        "doctrine/orm": "needed for any of the doctrine validators",
+        "symfony/validator": "needed for the symfony validators"
+    }
+}
