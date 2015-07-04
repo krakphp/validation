@@ -19,7 +19,7 @@ function validate($validator, $value) {
         return call_user_func($validator, $value);
     }
     else {
-        throw new InvalidValidatorException('Validator must be an instance of Validator');
+        throw new InvalidValidatorException();
     }
 }
 
