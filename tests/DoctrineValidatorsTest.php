@@ -17,6 +17,15 @@ class DoctrineValidatorsTest extends TestCase
         $this->assertInstanceOf(V\Violation::class, $v(1));
     }
 
+    public function testDoctrineEntities()
+    {
+        $repo = Phake::mock(ObjectRepository::class);
+        Phake::when($repo)->findBy->thenReturn([]);
+
+        $v = v\doctrine_entities($repo, 'id', 'alias');
+        $this->assertInstanceOf(V\Violation::class, $v([1]));
+    }
+
     public function testDoctrineUniqueEntity()
     {
         $or = Phake::mock(ObjectRepository::class);

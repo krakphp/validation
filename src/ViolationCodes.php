@@ -14,6 +14,7 @@ final class ViolationCodes
     const NOT_ITERABLE = 'not_iterable';
     const NOT_UNIQUE_ENTITY = 'not_unique_entity';
     const ENTITY_NOT_FOUND = 'entity_not_found';
+    const ENTITIES_NOT_FOUND = 'entities_not_found';
     const FAILED_SYMFONY = 'failed_symfony';
     const NOT_GREATER_THAN = 'not_greater_than';
     const NOT_LESS_THAN = 'not_less_than';
