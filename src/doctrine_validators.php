@@ -2,23 +2,25 @@
 
 namespace Krak\Validation;
 
-use Doctrine\Common\Persistence;
+use Doctrine\Common\Persistence\ObjectRepository;
 
-function doctrine_entity(Persistence\ObjectManager $em, $class_name, $alias = '')
+function doctrine_entity(ObjectRepository $repo, $field = 'id', $alias = '')
 {
-    return function($value) use ($em, $class_name, $alias) {
-        $entity = $em->find($class_name, $value);
+    return function($value) use ($repo, $field, $alias) {
+        $entity = $repo->findOneBy([
+            $field => $value,
+        ]);
 
         if (!$entity) {
             return new Violation(
-                ViolationCodes::UNKOWN_ENTITY,
-                [$class_name, $alias]
+                ViolationCodes::ENTITY_NOT_FOUND,
+                [$repo->getClassName(), $field, $alias, $value]
             );
         }
     };
 }
 
-function doctrine_unique_entity(Persistence\ObjectRepository $repo, $field, $alias = '')
+function doctrine_unique_entity(ObjectRepository $repo, $field, $alias = '')
 {
     return function($value) use ($repo, $field, $alias)
     {
