@@ -2,7 +2,7 @@
 
 namespace Krak\Tests;
 
-use Doctrine\Common\Persistence,
+use Doctrine\Common\Persistence\ObjectRepository,
     Krak\Validation as v,
     Phake;
 
@@ -10,16 +10,16 @@ class DoctrineValidatorsTest extends TestCase
 {
     public function testDoctrineEntity()
     {
-        $om = Phake::mock(Persistence\ObjectManager::class);
-        Phake::when($om)->find()->thenReturn(null);
+        $repo = Phake::mock(ObjectRepository::class);
+        Phake::when($repo)->findOneBy->thenReturn(null);
 
-        $v = v\doctrine_entity($om, 'Class');
+        $v = v\doctrine_entity($repo, 'id', 'alias');
         $this->assertInstanceOf(V\Violation::class, $v(1));
     }
 
     public function testDoctrineUniqueEntity()
     {
-        $or = Phake::mock(Persistence\ObjectRepository::class);
+        $or = Phake::mock(ObjectRepository::class);
         Phake::when($or)->findOneBy->thenReturn(1);
 
         $v = v\doctrine_unique_entity($or, 'field');
