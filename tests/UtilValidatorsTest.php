@@ -42,14 +42,15 @@ class UtilValidatorsTest extends TestCase
     }
     public function testPipeInvalidGreedy()
     {
-        $v = v\pipe([v\mock(true)]);
+        $v = v\pipeg([v\mock(true)]);
         $this->assertInternalType('array', $v(''));
     }
     public function testPipeInvalidNonGreedy()
     {
-        $v = v\pipe([v\mock(true)], false);
+        $v = v\pipe([v\mock(true)]);
         $this->assertTrue($v(''));
     }
+
     public function testCollectionValid()
     {
         $v = v\collection(['key'=>v\mock(null)]);
