@@ -107,10 +107,10 @@ function collection($coll, $err_on_extra = false)
 /**
  * takes a collection of validators and validates the value with each of the validators
  * one after the other.
- * @param $validators an traversable instance of validators to be applied to the value
+ * @param $validators a traversable instance of validators to be applied to the value
  * @param bool $greedy if greedy then it will run all validators else it'll stop on first error
  */
-function pipe($validators, $greedy = true)
+function pipe($validators, $greedy = false)
 {
     return function($value) use ($validators, $greedy) {
         $violations = [];
@@ -131,6 +131,15 @@ function pipe($validators, $greedy = true)
 
         return null;
     };
+}
+
+/**
+ * pipe greedy - pronounced pipe g. Defers execution to the pipe validator but as greedy
+ * @param $validators a traversable of validators to be applied to the value
+ */
+function pipeg($validators)
+{
+    return pipe($validators, true);
 }
 
 /**
