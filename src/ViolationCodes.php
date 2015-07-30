@@ -21,4 +21,6 @@ final class ViolationCodes
     const NOT_GREATER_THAN_OR_EQUAL = 'not_greater_than_or_equal';
     const NOT_LESS_THAN_OR_EQUAL = 'not_less_than_or_equal';
     const NOT_EQUAL = 'not_equal';
+    const RE_MATCH = 're_match';
+    const RE_EXCLUDE = 're_exclude';
 }
