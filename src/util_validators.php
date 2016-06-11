@@ -43,6 +43,15 @@ function collection_parse_flags($flags)
     ];
 }
 
+/** Creates a validator that validates the data is an array and then validates
+    it as a collection. Basically type_array -> collection */
+function array_collection($coll, $err_on_extra = false) {
+    return pipe([
+        type_array(),
+        collection($coll, $err_on_extra)
+    ]);
+}
+
 /**
  * validates a collection by passing in a colleciton of validators.
  * The `$key => $validator` of the collection needs to match the `$key => $value` in

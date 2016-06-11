@@ -122,6 +122,11 @@ class UtilValidatorsTest extends TestCase
         $v = v\for_all(v\stub());
         $this->assertNull($v([]));
     }
+
+    public function testArrayCollection() {
+        $v = v\array_collection(['id' => v\type_int()]);
+        $this->assertTrue($v(['id' => 1]) == null);
+    }
 }
 
 class StubValidator implements V\Validator
