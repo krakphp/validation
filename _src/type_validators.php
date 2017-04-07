@@ -9,9 +9,11 @@ function type($type, $validator)
             return null;
         }
 
-        return new Violation(
+        return violate(
             ViolationCodes::INVALID_TYPE,
-            [$type, gettype($value)]
+            new Params([
+                'type' => $type,
+            ])
         );
     };
 }
@@ -58,9 +60,9 @@ function is_instanceof($class)
             return;
         }
 
-        return new Violation(
+        return violate(
             ViolationCodes::NOT_INSTANCE_OF,
-            [$class, get_class($value)]
+            new Params(get_class($value), $class)
         );
     };
 }
@@ -72,10 +74,7 @@ function is_traversable()
             return;
         }
 
-        return new Violation(
-            ViolationCodes::NOT_TRAVERSABLE,
-            []
-        );
+        return violate(ViolationCodes::NOT_TRAVERSABLE, null);
     };
 }
 
@@ -86,9 +85,6 @@ function is_iterable()
             return;
         }
 
-        return new Violation(
-            ViolationCodes::NOT_ITERABLE,
-            []
-        );
+        return violate(ViolationCodes::NOT_ITERABLE, null);
     };
 }

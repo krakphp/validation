@@ -16,10 +16,7 @@ function symfony(ValidatorInterface $validator, $constraints)
     return function($value) use ($validator, $constraints) {
         $violations = $validator->validate($value, $constraints);
         if (count($violations)) {
-            return new Violation(
-                ViolationCodes::FAILED_SYMFONY,
-                [$violations]
-            );
+            return violate(ViolationCodes::FAILED_SYMFONY, null);
         }
     };
 }

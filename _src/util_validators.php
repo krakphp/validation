@@ -11,14 +11,9 @@ use Closure;
 function validate($validator, $value) {
     if ($validator instanceof Validator) {
         return $validator->validateValue($value);
-    }
-    else if ($validator instanceof Closure) {
+    } else if (is_callable($validator)) {
         return $validator($value);
-    }
-    else if (is_callable($validator)) {
-        return call_user_func($validator, $value);
-    }
-    else {
+    } else {
         throw new InvalidValidatorException();
     }
 }
@@ -34,21 +29,22 @@ function validate($validator, $value) {
  *      collection_parse_flags('o,p');
  *      collection_parse_flags('o|p');
  *
- * Valid flags are: optional
+ * Valid flags are: optional, alias
  */
 function collection_parse_flags($flags)
 {
     return [
-        'optional' => strpos($flags, 'o') !== false
+        'optional' => strpos($flags, 'o') !== false,
+        'alias' => strpos($flags, 'a') !== false
     ];
 }
 
 /** Creates a validator that validates the data is an array and then validates
     it as a collection. Basically type_array -> collection */
-function array_collection($coll, $err_on_extra = false) {
+function array_collection($coll, $err_on_extra = false, $as_violation = false) {
     return pipe([
         type_array(),
-        collection($coll, $err_on_extra)
+        collection($coll, $err_on_extra, $as_violation)
     ]);
 }
 
@@ -62,9 +58,9 @@ function array_collection($coll, $err_on_extra = false) {
  * @param bool $err_on_missing whether or not to return a missing_field violation if the field
  *  is missing
  */
-function collection($coll, $err_on_extra = false)
+function collection($coll, $err_on_extra = false, $as_violation = false)
 {
-    return function($data) use ($coll, $err_on_extra) {
+    return function($data) use ($coll, $err_on_extra, $as_violation) {
         $violations = [];
 
         foreach ($coll as $key => $param) {
@@ -76,11 +72,12 @@ function collection($coll, $err_on_extra = false)
                 $validator = $param;
             }
             $flags = collection_parse_flags($flags_str);
+            $name = $flags['alias'] ? $param[2] : $key;
 
             if (!array_key_exists($key, $data) && !$flags['optional']) {
-                $violations[$key] = new Violation(
+                $violations[$key] = violate(
                     ViolationCodes::MISSING_FIELD,
-                    [$key]
+                    Params::name($name)
                 );
                 continue;
             }
@@ -91,25 +88,29 @@ function collection($coll, $err_on_extra = false)
             $res = validate($validator, $data[$key]);
 
             if ($res) {
-                $violations[$key] = $res;
+                $violations[$key] = $res->withParams($res->params->withName($name));
             }
         }
 
         if ($err_on_extra) {
             $extra_keys = array_diff(array_keys($data), array_keys($coll));
             foreach ($extra_keys as $key) {
-                $violations[$key] = new Violation(
+                $violations[$key] = violate(
                     ViolationCodes::EXTRA_FIELD,
-                    [$key]
+                    Params::name($name)
                 );
             }
+        }
+
+        if ($violations && $as_violation) {
+            return violate(ViolationCodes::INVALID_COLLECTION, Params::children($violations));
         }
 
         if ($violations) {
             return $violations;
         }
 
-        return null;
+        return;
     };
 }
 
@@ -135,10 +136,8 @@ function pipe($validators, $greedy = false)
         }
 
         if ($violations) {
-            return $violations;
+            return Params::children($violations);
         }
-
-        return null;
     };
 }
 
@@ -183,6 +182,10 @@ function exists()
     return stub();
 }
 
+function not_empty() {
+    return pipe([type_string(), length(gt(0))]);
+}
+
 /**
  * Validates that a value is inside of an array of accpeted values
  */
@@ -194,9 +197,9 @@ function choice($accepted)
             return;
         }
 
-        return new Violation(
+        return violate(
             ViolationCodes::INVALID_CHOICE,
-            [$accepted]
+            new Params(['choices' => $accepted])
         );
     };
 }
@@ -210,9 +213,9 @@ function for_all($validator)
         foreach ($values as $val) {
             $res = $validator($val);
             if ($res) {
-                return new Violation(
+                return violate(
                     ViolationCodes::INVALID_COLLECTION,
-                    [$res]
+                    Params::children([$res])
                 );
             }
         }
@@ -226,5 +229,18 @@ function mock($violation)
 {
     return function($value) use ($violation) {
         return $violation;
+    };
+}
+
+/** overrides the default message of the violation if there is one */
+function msg($validator, $msg) {
+    return function($value) use ($validator, $msg) {
+        $res = validate($validator, $value);
+
+        if ($res && $res instanceof Violation) {
+            return $res->withMessage($msg);
+        }
+
+        return $res;
     };
 }

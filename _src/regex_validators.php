@@ -9,18 +9,31 @@ function re_match($pattern, $exclude = false)
 
         /* if it was a match and we want to exclude */
         if ($res && $exclude) {
-            return new Violation(
+            return violate(
                 ViolationCodes::RE_EXCLUDE,
-                [$pattern, $value]
+                Params::accepted($pattern)
             );
         }
         /* if not a match, and we want to match */
         else if (!$res && !$exclude) {
-            return new Violation(
+            return violate(
                 ViolationCodes::RE_MATCH,
-                [$pattern, $value]
+                Params::accepted($pattern)
             );
         }
+    };
+}
+
+/** performs simple email format validation */
+function re_email() {
+    $validate = re_match('/^.+\@\S+\.\S+$/');
+    return function($value) use ($validate) {
+        $v = $validate($value);
+        if (!$v) {
+            return;
+        }
+
+
     };
 }
 

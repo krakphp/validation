@@ -4,49 +4,46 @@ namespace Krak\Validation;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 
-function doctrine_entity(ObjectRepository $repo, $field = 'id', $alias = '')
-{
-    return function($value) use ($repo, $field, $alias) {
+function doctrine_entity(ObjectRepository $repo, $field = 'id') {
+    return function($value) use ($repo, $field) {
         $entity = $repo->findOneBy([
             $field => $value,
         ]);
 
         if (!$entity) {
-            return new Violation(
+            return violate(
                 ViolationCodes::ENTITY_NOT_FOUND,
-                [$repo->getClassName(), $field, $alias, $value]
+                Params::name($repo->getClassName())
             );
         }
     };
 }
 
-function doctrine_entities(ObjectRepository $repo, $field = 'id', $alias = '')
-{
-    return function($values) use ($repo, $field, $alias) {
+function doctrine_entities(ObjectRepository $repo, $field = 'id') {
+    return function($values) use ($repo, $field) {
         $entities = $repo->findBy([
             $field => $values,
         ]);
 
         if (\count($entities) !== \count($values)) {
-            return new Violation(
+            return violate(
                 ViolationCodes::ENTITIES_NOT_FOUND,
-                [$repo->getClassName(), $field, $alias, $values]
+                Params::name($repo->getClassName())
             );
         }
     };
 }
 
-function doctrine_unique_entity(ObjectRepository $repo, $field, $alias = '')
-{
+function doctrine_unique_entity(ObjectRepository $repo, $field) {
     return function($value) use ($repo, $field, $alias) {
         $entity = $repo->findOneBy([
             $field => $value,
         ]);
 
         if ($entity) {
-            return new Violation(
+            return violate(
                 ViolationCodes::NOT_UNIQUE_ENTITY,
-                [$repo->getClassName(), $field, $alias]
+                Params::name($repo->getClassName())
             );
         }
     };

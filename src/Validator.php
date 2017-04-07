@@ -2,10 +2,6 @@
 
 namespace Krak\Validation;
 
-interface Validator
-{
-    /**
-     * @return Violation[]|Violation|null
-     */
-    public function validateValue($value);
+interface Validator {
+    public function validate($value, array $ctx = []);
 }

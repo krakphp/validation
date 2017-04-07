@@ -2,7 +2,7 @@
     "name": "krak/validation",
     "description": "Functional validation library",
     "type": "library",
-    "homepage": "http://gitlab.bighead.net/krak/validation",
+    "homepage": "https://github.com/krakphp/validation",
     "keywords": [
         "validation",
         "validator",
@@ -38,5 +38,10 @@
     "suggest": {
         "doctrine/orm": "needed for any of the doctrine validators",
         "symfony/validator": "needed for the symfony validators"
+    },
+    "require": {
+        "krak/cargo": "^0.2.3",
+        "krak/invoke": "^0.1.0",
+        "nikic/iter": "^1.4"
     }
 }
