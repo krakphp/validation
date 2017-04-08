@@ -2,7 +2,7 @@
 
 namespace Krak\Validation;
 
-class Validation implements FormatMessage, FormatViolations {
+class WrappedValidator implements FormatMessage, FormatViolations {
     private $validation_context;
     private $message_store;
     private $format_message;

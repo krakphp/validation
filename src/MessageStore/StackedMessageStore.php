@@ -18,7 +18,7 @@ class StackedMessageStore extends AbstractReadOnlyMessageStore
 
     public function get(Validation\Violation $v) {
         for ($i = count($this->stores) - 1; $i >= 0; $i--) {
-            $store = $this->stores[$store];
+            $store = $this->stores[$i];
             if ($message = $store->get($v)) {
                 return $message;
             }

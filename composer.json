@@ -20,7 +20,8 @@
             "Krak\\Validation\\": "src"
         },
         "files": [
-            "src/inc.php"
+            "src/Validators/core.php",
+            "src/util.php"
         ]
     },
     "autoload-dev": {

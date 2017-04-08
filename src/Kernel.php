@@ -9,6 +9,7 @@ class Kernel extends Cargo\Container\ContainerDecorator
     public function __construct(Cargo\Container $c = null) {
         parent::__construct($c ?: Cargo\container());
         Cargo\register($this, new ValidationServiceProvider());
+
         $this->with(new ValidationPackage\CoreValidationPackage());
     }
 
@@ -16,9 +17,19 @@ class Kernel extends Cargo\Container\ContainerDecorator
         $package->withValidation($this);
     }
 
+    public function withDoctrineValidators() {
+        return $this->with(new ValidationPackage\DoctrineValidationPackage());
+    }
+
     public function validators(array $validators) {
         foreach ($validators as $key => $value) {
             $this['krak.validation.validators'][$key] = $value;
+        }
+    }
+
+    public function context(array $ctx) {
+        foreach ($ctx as $key => $value) {
+            $this['krak.validation.context'][$key] = $value;
         }
     }
 
@@ -30,7 +41,7 @@ class Kernel extends Cargo\Container\ContainerDecorator
         $this->pushMessageStore(new MessageStore\LangFileMessageStore($file));
     }
 
-    public function pushMessageStore(MesssageStore $store) {
+    public function pushMessageStore(MessageStore $store) {
         $this['krak.validation.messages']->push($store);
     }
 
@@ -39,7 +50,7 @@ class Kernel extends Cargo\Container\ContainerDecorator
     }
 
     public function make($validations) {
-        return new Validation(
+        return new WrappedValidator(
             new ValidationContext\ForceContextValidationContext($this[ValidationContext::class]),
             $this[MessageStore::class],
             $this[FormatMessage::class],

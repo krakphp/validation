@@ -15,6 +15,13 @@ class StrTrFormatMessage implements Validation\FormatMessage
             $params['attribute'] = ucwords(str_replace(['.', '_'], ' ', $params['attribute'])) . ' field';
         }
         $params = iter\reduce(function($acc, $v, $k) {
+            if (is_array($v)) {
+                $v = implode(',', $v);
+            } else if ((is_object($v) && method_exists($v, '__toString')) || !is_resource($v)) {
+                $v = (string) $v;
+            } else {
+                return $acc;
+            }
             $acc['{{'.$k.'}}'] = $v;
             return $acc;
         }, $params, []);
