@@ -24,7 +24,7 @@ $violations = $validator->validate([
 ]);
 
 if ($violations) { // you can also check $validator->failed()
-    print_r$violations->format()); // format into an array of error messages
+    print_r($violations->format()); // format into an array of error messages
 }
 ```
 
