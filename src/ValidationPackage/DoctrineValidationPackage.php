@@ -5,7 +5,7 @@ namespace Krak\Validation\ValidationPackage;
 use Krak\Validation;
 use Krak\Validation\Validators\Doctrine;
 
-class DoctrineValidationPackage implements ValidationPackage
+class DoctrineValidationPackage implements Validation\ValidationPackage
 {
     public function withValidation(Validation\Kernel $v) {
         $v->validators([

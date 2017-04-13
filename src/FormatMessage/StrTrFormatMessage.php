@@ -16,7 +16,7 @@ class StrTrFormatMessage implements Validation\FormatMessage
         }
         $params = iter\reduce(function($acc, $v, $k) {
             if (is_array($v)) {
-                $v = implode(',', $v);
+                $v = implode(', ', $v);
             } else if ((is_object($v) && method_exists($v, '__toString')) || !is_resource($v)) {
                 $v = (string) $v;
             } else {

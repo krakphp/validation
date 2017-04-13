@@ -4,7 +4,8 @@
 
 ### Added
 
-- New `required` validator
+- New `required` and `date` validator
+- `arrayArgs` to easily parse args that should be an array or array of arguments.
 
 ### Fixed
 

@@ -52,3 +52,11 @@ function violate($code, $params = null) {
 function violations($violations, $flattened = false) {
     return new ViolationCollection($violations, $flattened);
 }
+
+function arrayArgs(array $args) {
+    if (count($args) == 1 && is_array($args[0])) {
+        return $args[0];
+    }
+
+    return $args;
+}

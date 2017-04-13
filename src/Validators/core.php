@@ -42,6 +42,7 @@ function collection($validators, $err_on_extra = false) {
 }
 
 function pipe(...$validators) {
+    $validators = Validation\arrayArgs($validators);
     return function($value, array $context = []) use ($validators) {
         foreach ($validators as $validator) {
             $res = Validation\validate($value, $validator, $context);
@@ -54,6 +55,7 @@ function pipe(...$validators) {
 }
 
 function pipeAll(...$validators) {
+    $validators = Validation\arrayArgs($validators);
     return function($value, array $context = []) use ($validators) {
         $violations = [];
         foreach ($validators as $validator) {
@@ -150,6 +152,7 @@ function length($max) {
 }
 
 function different(...$fields) {
+    $fields = Validation\arrayArgs($fields);
     return function($data) use ($fields) {
         $value = $data[$fields[0]];
         foreach (array_slice($fields, 1) as $field) {
@@ -163,6 +166,7 @@ function different(...$fields) {
 }
 
 function same(...$fields) {
+    $fields = Validation\arrayArgs($fields);
     return function($data) use ($fields) {
         $value = $data[$fields[0]];
         foreach (array_slice($fields, 1) as $field) {
@@ -194,6 +198,7 @@ function fields($fields, $assert) {
  * Validates that a value is inside of an array of accepted values
  */
 function inArray(...$accepted) {
+    $accepted = Validation\arrayArgs($accepted);
     return function($value) use ($accepted) {
         if (in_array($value, $accepted)) {
             return;
@@ -211,14 +216,16 @@ function inArray(...$accepted) {
  */
 function forAll($validator) {
     return function($values, array $ctx = []) use ($validator) {
-        $violations = iter\map(function($value, $key) use ($validator, $ctx) {
+        $violations = iter\reduce(function($acc, $value, $key) use ($validator, $ctx) {
+            $field_key = Validation\contextFieldKey($ctx, sprintf('[%d]', $key), '');
+            $ctx['field_key'] = $field_key;
             $v = Validation\validate($value, $validator, $ctx);
             if ($v && !$v->get('valid')) {
-                $v = $v->with('attribute', Validation\contextFieldKey($ctx, sprintf('[%d]', $key), ''));
+                $v = $v->with('attribute', $field_key);
+                $acc[] = $v;
             }
-            return $v;
-        }, $values);
-        $violations = iter\filter(function($v) { return $v; }, $violations);
+            return $acc;
+        }, $values, []);
         $violations = iter\toArray($violations);
 
         if ($violations) {
@@ -267,6 +274,16 @@ function typeNull() {
 
 function digits() {
     return wrap('digits', 'ctype_digits');
+}
+
+function date() {
+    return function($value) {
+        if (is_string($value) && (bool) strtotime($value)) {
+            return;
+        }
+
+        return Validation\violate('date');
+    };
 }
 
 /** # Regex Validators **/
