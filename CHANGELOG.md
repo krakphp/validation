@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.1 - 2017-04-13
+
 ### Added
 
 - New `required` and `date` validator
