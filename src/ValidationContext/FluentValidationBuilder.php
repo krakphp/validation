@@ -29,8 +29,8 @@ class FluentValidationBuilder
                 $validator_def = $this->validators[$validator];
                 if (is_callable($validator_def)) {
                     $validator = $validator_def(...$args);
-                } else if (class_exists($validator)) {
-                    $validator = new $validator(...$args);
+                } else if (class_exists($validator_def)) {
+                    $validator = new $validator_def(...$args);
                 } else {
                     throw new \LogicException("Validator '$validator' is not a valid callable or class name.");
                 }

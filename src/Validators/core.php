@@ -101,13 +101,25 @@ function wrap($name, $func) {
 }
 
 function exists() {
+    $validator = required();
+    return function($value, array $ctx = []) use ($validator) {
+        $v = $validator($value, $ctx);
+        if (!$v) {
+            return;
+        }
+
+        return $v->withCode('exists');
+    };
+}
+
+function required() {
     return function($value, array $ctx = []) {
         if (!isset($ctx['field_exists'])) {
             return;
         }
 
         if (!$ctx['field_exists']) {
-            return Validation\violate('exists');
+            return Validation\violate('required');
         }
     };
 }
@@ -217,8 +229,8 @@ function forAll($validator) {
 
 /** # Type Validators **/
 
-function typeBool() {
-    return wrap('bool', function($v) {
+function typeBoolean() {
+    return wrap('boolean', function($v) {
         return is_bool($v) ||
             (is_int($v) && ($v === 0 || $v === 1)) ||
             (is_string($v) && ($v === "1" || $v === "0"));

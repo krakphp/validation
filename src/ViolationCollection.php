@@ -51,7 +51,7 @@ class ViolationCollection implements IteratorAggregate
     public function toMessages() {
         return iter\toArray(iter\map(function($v) {
             return $v->get('message');
-        }, $v));
+        }, $this));
     }
 
     public function find($key) {

@@ -4,6 +4,17 @@
 
 ### Added
 
+- New `required` validator
+
+### Fixed
+
+- A few bugs in ViolationCollection and FluentValidationBuilder
+- messaging for boolean validator
+
+## 0.3.0 - 2017-04-08
+
+### Added
+
 - Added new Validation Kernel
 - ValidationPackages
 - Formatted Messages

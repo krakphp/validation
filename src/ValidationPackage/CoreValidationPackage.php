@@ -13,13 +13,14 @@ class CoreValidationPackage implements ValidationPackage
         $p = Validation\Validators::class . '\\';
         $v->validators([
             'exists' => $p.'exists',
+            'required' => $p.'required',
             'optional' => $p.'optional',
             'between' => $p.'between',
             'length' => $p.'length',
             'nullable' => $p.'nullable',
             'string' => $p.'typeString',
             'integer' => $p.'typeInteger',
-            'boolean' => $p.'typeBool',
+            'boolean' => $p.'typeBoolean',
             'array' => $p.'typeArray',
             'numeric' => $p.'typeNumeric',
             'null' => $p.'typeNull',
@@ -37,6 +38,7 @@ class CoreValidationPackage implements ValidationPackage
 
         $v->messages([
             'exists' => 'The {{attribute}} does not exist.',
+            'required' => 'The {{attribute}} is required.',
             'between' => 'The {{attribute}} must be between {{min}} and {{max}}',
             'length' => 'The {{attribute}} cannot be greater than {{max}}',
             'string' => 'The {{attribute}} is not a valid string.',
