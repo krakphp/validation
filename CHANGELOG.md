@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.3 - 2017-04-13
+
+### Fixed
+
+- Kernel bug where context was not passed in
+
 ## 0.3.2 - 2017-04-13
 
 ### Fixed

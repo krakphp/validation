@@ -55,6 +55,7 @@ class Kernel extends Cargo\Container\ContainerDecorator
             $this[MessageStore::class],
             $this[FormatMessage::class],
             $this[FormatViolations::class],
+            $this['krak.validation.context']->getArrayCopy(),
             $validations
         );
     }

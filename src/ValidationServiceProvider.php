@@ -37,7 +37,7 @@ class ValidationServiceProvider implements Cargo\ServiceProvider
         $c['krak.validation.default_message'] = "The {{attribute}} is invalid.";
         $c['krak.validation.validators'] = new ArrayObject();
         $c['krak.validation.context'] = new ArrayObject([
-            'container' => $c,
+            'container' => Cargo\toInterop($c),
         ]);
     }
 }

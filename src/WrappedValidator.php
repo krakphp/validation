@@ -7,16 +7,18 @@ class WrappedValidator implements FormatMessage, FormatViolations {
     private $message_store;
     private $format_message;
     private $format_violations;
+    private $context;
     private $validations;
 
     private $result;
     private $has_run;
 
-    public function __construct(ValidationContext $validation_context, MessageStore $message_store, FormatMessage $format_message, FormatViolations $format_violations, $validations) {
+    public function __construct(ValidationContext $validation_context, MessageStore $message_store, FormatMessage $format_message, FormatViolations $format_violations, array $context, $validations) {
         $this->validation_context = $validation_context;
         $this->message_store = $message_store;
         $this->format_message = $format_message;
         $this->format_violations = $format_violations;
+        $this->context = $context;
         $this->validations = $validations;
         $this->has_run = false;
     }
@@ -42,7 +44,7 @@ class WrappedValidator implements FormatMessage, FormatViolations {
     }
 
     public function validate($value, array $ctx = []) {
-        $violation = $this->validation_context->validate($value, $this->validations, $ctx);
+        $violation = $this->validation_context->validate($value, $this->validations, array_merge($this->context, $ctx));
         $this->has_run = true;
         if (!$violation) {
             return;
