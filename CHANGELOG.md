@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### Fixed
+
+- `digits` validator
+
+### Added
+
+- `alpha` and `alpha_num` validators
+- `wrapRegex` to simplify wrapping of regex validators
+- Initial tests with peridot
+
 ## 0.3.1 - 2017-04-13
 
 ### Added

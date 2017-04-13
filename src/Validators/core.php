@@ -273,7 +273,15 @@ function typeNull() {
 }
 
 function digits() {
-    return wrap('digits', 'ctype_digits');
+    return wrap('digits', 'ctype_digit');
+}
+
+function alpha() {
+    return wrap('alpha', 'ctype_alpha');
+}
+
+function alphaNum() {
+    return wrap('alpha_num', 'ctype_alnum');
 }
 
 function date() {
@@ -287,6 +295,17 @@ function date() {
 }
 
 /** # Regex Validators **/
+
+function wrapRegex($code, $pattern) {
+    $validate = regexMatch($pattern);
+    return function($value) use ($code, $validate) {
+        $v = $validate($value);
+        if (!$v) {
+            return;
+        }
+        return $v->withCode($code);
+    };
+}
 
 function regexMatch($pattern, $exclude = false) {
     return function($value) use ($pattern, $exclude) {
@@ -311,14 +330,7 @@ function regexMatch($pattern, $exclude = false) {
 
 /** performs simple email format validation */
 function regexEmail() {
-    $validate = regexMatch('/^.+\@\S+\.\S+$/');
-    return function($value) use ($validate) {
-        $v = $validate($value);
-        if (!$v) {
-            return;
-        }
-        return $v->withCode('regex_email');
-    };
+    return wrapRegex('regex_email', '/^.+\@\S+\.\S+$/');
 }
 
 function regexExclude($pattern) {

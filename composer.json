@@ -31,8 +31,8 @@
     },
     "require-dev": {
         "doctrine/common": "^2.5",
+        "peridot-php/peridot": "^1.19",
         "phake/phake": "^2.0",
-        "phpunit/phpunit": "~4.0",
         "symfony/validator": "^2.7",
         "symfony/var-dumper": "^2.0"
     },

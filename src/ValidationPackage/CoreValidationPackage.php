@@ -27,6 +27,8 @@ class CoreValidationPackage implements ValidationPackage
             'float' => $p.'typeFloat',
             'double' => $p.'typeDouble',
             'digits' => $p.'digits',
+            'alpha' => $p.'alpha',
+            'alpha_num' => $p.'alphaNum',
             'date' => $p.'date',
 
             'in' => $p.'inArray',
@@ -51,6 +53,8 @@ class CoreValidationPackage implements ValidationPackage
             'float' => 'The {{attribute}} is not a valid float.',
             'double' => 'The {{attribute}} is not a valid double.',
             'digits' => 'The {{attribute}} must only contain digits.',
+            'alpha' => 'The {{attribute}} must only contain alphabetic characters.',
+            'alpha_num' => 'The {{attribute}} must only contain alpha-numeric characters.',
             'date' => 'The {{attribute}} must be a valid date.',
             'in' => 'The {{attribute}} must be one of: {{accepted}}.',
             'regex' => 'The {{attribute}} does not match the pattern: {{pattern}}.',
