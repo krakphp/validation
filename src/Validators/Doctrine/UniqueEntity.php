@@ -4,7 +4,7 @@ namespace Krak\Validation\Validators\Doctrine;
 
 use Krak\Validation;
 
-class Unique extends AbstractDoctrineValidator
+class UniqueEntity extends AbstractDoctrineValidator
 {
     private $validator;
 

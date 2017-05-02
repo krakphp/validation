@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Doctrine Unique Entity class bug
+
 ## 0.3.3 - 2017-04-13
 
 ### Fixed
