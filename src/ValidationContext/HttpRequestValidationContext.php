@@ -9,9 +9,9 @@ class HttpRequestValidationContext extends ValidationContextDecorator
     public function validate($value, $validator, array $ctx = []) {
         if ($value instanceof ServerRequestInterface) {
             $value = array_merge(
-                $req->getQueryParams(),
-                $req->getParsedBody(),
-                $req->getUploadedFiles()
+                $value->getQueryParams(),
+                $value->getParsedBody(),
+                $value->getUploadedFiles()
             );
         }
 
