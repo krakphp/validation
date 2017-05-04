@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.5 - 2017-05-03
+
 ### Fixed
 
 - HttpRequestValidationContext bug
