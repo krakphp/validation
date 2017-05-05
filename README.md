@@ -52,3 +52,46 @@ function($value, array $ctx = [])
 ```
 
 The second parameter can typically be left out, but is used to pass additional information into the validator. A good example is a PSR Container so that dependencies can be lazy loaded at time of actual validation.
+
+### Violations
+
+Creating violations is easy with the `violate` or `violations` function. For most validators, you'll simply be creating one validator.
+
+```php
+<?php
+
+use Krak\Validation;
+
+/** enforces that a value equals a specific value */
+function equalsStringValidator($match) {
+    return function($value, array $ctx = []) use ($match) {
+        if ($value == $match) {
+            return;
+        }
+
+        return Validation\violate('equals_string', [
+            'match' => $match
+        ]);
+    };
+}
+
+$v = equalsStringValidator('foo');
+$v('foo'); // returns null
+$violation = $v('bar'); // return a Krak\Validation\Violation
+```
+
+In some cases, one validator can return multiple violations. In that case, we just use the `violations` to create a violation collection. You can checkout the `Krak\Validation\Validators\collection` validator to see how to create a violation collection.
+
+### Throwing Violations
+
+Once you have a violation or a violation collection, you can optionally throw them as exceptions to be handled upstream.
+
+```php
+<?php
+
+try {
+    $violation->abort();
+} catch (Krak\Validation\Exception\ViolationException $e) {
+    assert($e->violation === $violation);
+}
+```

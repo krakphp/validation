@@ -44,4 +44,8 @@ trait ViolationParams {
 
         return $this->params[$key];
     }
+
+    public function abort() {
+        throw new Exception\ViolationException($this);
+    }
 }
