@@ -5,6 +5,7 @@
 ### Added
 
 - ViolationException #3
+- Violation Documentation
 
 ## 0.3.5 - 2017-05-03
 
