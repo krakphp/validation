@@ -55,7 +55,7 @@ The second parameter can typically be left out, but is used to pass additional i
 
 ### Violations
 
-Creating violations is easy with the `violate` or `violations` function. For most validators, you'll simply be creating one validator.
+Creating violations is easy with the `violate` or `violations` function. For most validators, you'll simply be creating one violation.
 
 ```php
 <?php
