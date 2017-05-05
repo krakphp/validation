@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- ViolationException #3
+
 ## 0.3.5 - 2017-05-03
 
 ### Fixed

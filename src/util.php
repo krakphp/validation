@@ -49,8 +49,8 @@ function violate($code, $params = null) {
     return new Violation($code, $params);
 }
 
-function violations($violations, $flattened = false) {
-    return new ViolationCollection($violations, $flattened);
+function violations($violations) {
+    return new ViolationCollection($violations);
 }
 
 function arrayArgs(array $args) {

@@ -20,6 +20,6 @@ class Violation
     }
 
     public function flatten() {
-        return new ViolationCollection([$this]);
+        return (new ViolationCollection([$this]))->with('flattened', true);
     }
 }
