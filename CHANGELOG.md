@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.6 - 2017-05-06
+
 ### Added
 
 - ViolationException #3
