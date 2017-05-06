@@ -15,8 +15,12 @@ class CoreValidationPackage implements ValidationPackage
             'exists' => $p.'exists',
             'required' => $p.'required',
             'optional' => $p.'optional',
+
             'between' => $p.'between',
             'length' => $p.'length',
+            'min' => $p.'min',
+            'max' => $p.'max',
+
             'nullable' => $p.'nullable',
             'string' => $p.'typeString',
             'integer' => $p.'typeInteger',
@@ -42,8 +46,12 @@ class CoreValidationPackage implements ValidationPackage
         $v->messages([
             'exists' => 'The {{attribute}} does not exist.',
             'required' => 'The {{attribute}} is required.',
-            'between' => 'The {{attribute}} must be between {{min}} and {{max}}',
-            'length' => 'The {{attribute}} cannot be greater than {{max}}',
+
+            'between' => 'The {{attribute}} size must be between {{min}} and {{max}}',
+            'length' => 'The {{attribute}} size cannot be greater than {{max}}',
+            'min' => 'The {{attribute}} size must be greater than or equal to {{min}}',
+            'max' => 'The {{attribute}} size must be less than or equal to {{max}}',
+
             'string' => 'The {{attribute}} is not a valid string.',
             'integer' => 'The {{attribute}} is not a valid integer.',
             'boolean' => 'The {{attribute}} is not a valid boolean.',
