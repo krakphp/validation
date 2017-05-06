@@ -126,31 +126,6 @@ function required() {
     };
 }
 
-function between($min, $max) {
-    $min = (int) $min;
-    $max = (int) $max;
-    return function($value) use ($min, $max) {
-        if (is_string($value)) {
-            $value = strlen($value);
-        } else if (is_array($value)) {
-            $value = count($value);
-        }
-
-        return $min <= $value && $value <= $max ? null : Validation\violate('between', [
-            'min' => $min,
-            'max' => $max
-        ]);
-    };
-}
-
-function length($max) {
-    return function($value) use ($max) {
-        $v = between($max, $max);
-        $res = $v($value);
-        return $res ? $res->without('min')->withCode('length') : null;
-    };
-}
-
 function different(...$fields) {
     $fields = Validation\arrayArgs($fields);
     return function($data) use ($fields) {
@@ -189,6 +164,60 @@ function fields($fields, $assert) {
                 ]);
             }
         }
+    };
+}
+
+/** # Length Validators **/
+
+/** helper to calculate the "size" of a variable. */
+function _toSize($value) {
+    if (is_string($value)) {
+        $value = strlen($value);
+    } else if (is_array($value)) {
+        $value = count($value);
+    }
+
+    return $value;
+}
+
+function between($min, $max) {
+    $min = (int) $min;
+    $max = (int) $max;
+    return function($value) use ($min, $max) {
+        $value = _toSize($value);
+
+        return $min <= $value && $value <= $max ? null : Validation\violate('between', [
+            'min' => $min,
+            'max' => $max
+        ]);
+    };
+}
+
+function length($size) {
+    $size = (int) $size;
+    return function($value) use ($size) {
+        return _toSize($value) === $size ? null : Validation\violate('length', [
+            'max' => $size,
+            'size' => $size,
+        ]);
+    };
+}
+
+function min($min) {
+    $min = (int) $min;
+    return function($value) use ($min) {
+        return _toSize($value) >= $min ? null : Validation\violate('min', [
+            'min' => $min,
+        ]);
+    };
+}
+
+function max($max) {
+    $max = (int) $max;
+    return function($value) use ($max) {
+        return _toSize($value) <= $max ? null : Validation\violate('max', [
+            'max' => $max,
+        ]);
     };
 }
 

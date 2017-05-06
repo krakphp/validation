@@ -6,6 +6,7 @@
 
 - ViolationException #3
 - Violation Documentation
+- Length Validators #2
 
 ## 0.3.5 - 2017-05-03
 
