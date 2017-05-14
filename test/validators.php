@@ -100,7 +100,7 @@ describe('#alpha', function() {
         ]);
     });
 });
-describe('#alpha_num', function() {
+describe('#alphaNum', function() {
     it('validates only alpha numeric chars', function() {
         $v = Assert\alphaNum();
         assertPass($v, [

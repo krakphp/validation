@@ -38,7 +38,8 @@
     },
     "suggest": {
         "doctrine/orm": "needed for any of the doctrine validators",
-        "symfony/validator": "needed for the symfony validators"
+        "symfony/validator": "needed for the symfony validators",
+        "ext-ctype": "needed for string validators"
     },
     "require": {
         "krak/cargo": "^0.2.3",

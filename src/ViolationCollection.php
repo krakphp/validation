@@ -2,12 +2,14 @@
 
 namespace Krak\Validation;
 
+use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
+use LogicException;
 
 use iter;
 
-class ViolationCollection implements IteratorAggregate
+class ViolationCollection implements ArrayAccess, IteratorAggregate
 {
     use ViolationParams;
 
@@ -106,5 +108,18 @@ class ViolationCollection implements IteratorAggregate
 
     public function getIterator() {
         return new ArrayIterator($this->violations);
+    }
+
+    public function offsetSet($offset, $value) {
+        throw new LogicException('Cannot set a violation. Use withViolations instead.');
+    }
+    public function offsetExists($offset) {
+        return array_key_exists($offset, $this->violations);
+    }
+    public function offsetUnset($offset) {
+        throw new LogicException('Cannot unset a violation. Use withViolations instead.');
+    }
+    public function offsetGet($offset) {
+        return $this->violations[$offset];
     }
 }
