@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Violation Collection Array Access #7
+
 ## 0.3.6 - 2017-05-06
 
 ### Added
