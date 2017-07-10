@@ -16,6 +16,49 @@ function assertViolation($validator, array $values, array $ctx = []) {
     }
 }
 
+describe('#collection', function() {
+    it('validates a collection of items', function() {
+        $v = Assert\collection([
+            'i' => Assert\typeInteger(),
+            's' => Assert\typeString(),
+        ]);
+
+        assertPass($v, [
+            ['i' => 0, 's' => ''],
+        ]);
+        $violations = $v([]);
+        assert($violations[0]->code == 'integer' && $violations[1]->code == 'string');
+    });
+    it('allows optional fields', function() {
+        $v = Assert\collection([
+            'i' => Assert\pipe([Assert\optional(), Assert\typeInteger()])
+        ]);
+        assert($v([]) === null && $v(['i' => null])[0]->code == 'integer');
+    });
+});
+describe('#pipe', function() {
+    it('pipes validators one after the next', function() {
+        $v = Assert\pipe([Assert\typeInteger(), Assert\max(5)]);
+        assertPass($v, [1]);
+        assertViolation($v, [
+            ['3', 'integer'],
+            [6, 'max'],
+        ]);
+    });
+});
+describe('#any', function() {
+    $v = Assert\any([Assert\typeInteger(), Assert\typeString()]);
+    it('passes if any of the validators pass', function() use ($v) {
+        assertPass($v, [1, 'a']);
+    });
+    it('fails if all of the validators fail', function() use ($v) {
+        $vlts1 = $v(true);
+        $vlts2 = $v([]);
+
+        assert(count($vlts1) === count($vlts2) && $vlts1[0]->code == 'integer' && $vlts1[1]->code == 'string');
+    });
+});
+
 describe('#between', function() {
     it('validates size is between two values', function() {
         $v = Assert\between(1, 5);
@@ -110,6 +153,41 @@ describe('#alphaNum', function() {
         ]);
         assertViolation($v, [
             ['1!a', 'alpha_num']
+        ]);
+    });
+});
+describe('#double', function() {
+    it('validates that the type of a var is double', function() {
+        $v = Assert\typeDouble();
+        assertPass($v, [1.0, (double) 1, (float) 1]);
+        assertViolation($v, [
+            [1, 'double'],
+            ['a', 'double'],
+            [(int) 1.1, 'double'],
+        ]);
+    });
+});
+describe('#number', function() {
+    it('validates that a var is a number', function() {
+        $v = Assert\number();
+        assertPass($v, [1, 1.0, (double) 1, (float) 1]);
+        assertViolation($v, [
+            ['a', 'number'],
+            [[], 'number'],
+            [new stdClass(), 'number'],
+        ]);
+    });
+});
+describe('#date', function() {
+    it('validates a valid date string', function() {
+        $v = Assert\date();
+        assertPass($v, [
+            '2017-07-09 00:12:00',
+            '2017',
+        ]);
+        assertViolation($v, [
+            [1, 'date'],
+            ['-b123-5-a', 'date'],
         ]);
     });
 });

@@ -5,6 +5,7 @@
 ### Added
 
 - Violation Collection Array Access #7
+- `number` and `any` validator #9
 
 ## 0.3.6 - 2017-05-06
 
