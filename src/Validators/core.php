@@ -54,6 +54,18 @@ function pipe(...$validators) {
     };
 }
 
+function any(...$validators) {
+    $validators = Validation\arrayArgs($validators);
+    return function($value, array $context = []) use ($validators) {
+        $violations = array_map(function($validator) use ($value, $context) {
+            return Validation\validate($value, $validator, $context);
+        }, $validators);
+        return iter\any(function($v) { return $v == null; }, $violations)
+            ? null
+            : Validation\violations($violations);
+    };
+}
+
 function pipeAll(...$validators) {
     $validators = Validation\arrayArgs($validators);
     return function($value, array $context = []) use ($validators) {
@@ -313,14 +325,16 @@ function alphaNum() {
     return wrap('alpha_num', 'ctype_alnum');
 }
 
-function date() {
-    return function($value) {
-        if (is_string($value) && (bool) strtotime($value)) {
-            return;
-        }
+function number() {
+    return wrap('number', function($value) {
+        return is_int($value) || is_double($value) || is_float($value);
+    });
+}
 
-        return Validation\violate('date');
-    };
+function date() {
+    return wrap('date', function($value) {
+        return is_string($value) && (bool) strtotime($value);
+    });
 }
 
 /** # Regex Validators **/
