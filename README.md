@@ -95,3 +95,13 @@ try {
     assert($e->violation === $violation);
 }
 ```
+
+### API
+
+All of the following are defined in the `Krak\Validation\Validators` namespace.
+
+#### `collection($validators, $err_on_extra = true)`
+
+Validates a map of validators with attribute names mapping to other validators. `$err_on_extra` is a flag that will determine whether or not to validate if extra fields are in the input array.
+
+This function will return either a Violation, ViolationCollection, or null depending on the input value.

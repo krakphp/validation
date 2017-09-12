@@ -6,14 +6,20 @@ use Krak\Validation;
 
 use iter;
 
-function collection($validators, $err_on_extra = false) {
+function collection($validators, $err_on_extra = true) {
     return function($value, array $ctx = []) use ($validators, $err_on_extra) {
         if (!is_array($value)) {
             return Validation\violate('array');
         }
 
-        if ($err_on_extra && count($value) > count($validators)) {
-            return Validation\violate('extra_fields');
+        if ($err_on_extra) {
+            $value_keys = array_keys($value);
+            $validator_keys = array_keys($validators);
+            if ($key_diff = array_diff($value_keys, $validator_keys)) {
+                return Validation\violate('invalid_keys', [
+                    'keys' => implode(', ', $key_diff)
+                ]);
+            }
         }
 
         $errors = iter\reduce(function($acc, $validator, $key) use ($value, $ctx) {
