@@ -2,10 +2,14 @@
 
 ## Unreleased
 
+## 0.3.8 - 2018-02-01
+
 ### Added
 
 - Validation for extra keys in the `collection` validator
 - API documentation
+- Validator Documentation
+- Aliases with the Kernel `aliases` method.
 
 ## 0.3.7 - 2017-07-09
 
