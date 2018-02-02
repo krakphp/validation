@@ -35,6 +35,13 @@ describe('#collection', function() {
         ]);
         assert($v([]) === null && $v(['i' => null])[0]->code == 'integer');
     });
+    it('errs on extra keys', function() {
+        $v = Assert\collection([
+            'a' => Assert\pipe([Assert\optional(), Assert\typeInteger()]),
+        ]);
+        $err = $v(['b' => 1, 'c' => 2]);
+        assert($err->code == 'invalid_keys' && $err->params['keys'] == 'b, c');
+    });
 });
 describe('#pipe', function() {
     it('pipes validators one after the next', function() {

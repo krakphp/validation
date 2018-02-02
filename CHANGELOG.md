@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Added
+
+- Validation for extra keys in the `collection` validator
+- API documentation
+
 ## 0.3.7 - 2017-07-09
 
 ### Added
