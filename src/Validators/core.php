@@ -188,7 +188,7 @@ function fields($fields, $assert) {
 /** # Length Validators **/
 
 /** helper to calculate the "size" of a variable. */
-function _toSize($value) {
+function toSize($value) {
     if (is_string($value)) {
         $value = strlen($value);
     } else if (is_array($value)) {
@@ -202,7 +202,7 @@ function between($min, $max) {
     $min = (int) $min;
     $max = (int) $max;
     return function($value) use ($min, $max) {
-        $value = _toSize($value);
+        $value = toSize($value);
 
         return $min <= $value && $value <= $max ? null : Validation\violate('between', [
             'min' => $min,
@@ -214,7 +214,7 @@ function between($min, $max) {
 function length($size) {
     $size = (int) $size;
     return function($value) use ($size) {
-        return _toSize($value) === $size ? null : Validation\violate('length', [
+        return toSize($value) === $size ? null : Validation\violate('length', [
             'max' => $size,
             'size' => $size,
         ]);
@@ -224,7 +224,7 @@ function length($size) {
 function min($min) {
     $min = (int) $min;
     return function($value) use ($min) {
-        return _toSize($value) >= $min ? null : Validation\violate('min', [
+        return toSize($value) >= $min ? null : Validation\violate('min', [
             'min' => $min,
         ]);
     };
@@ -233,7 +233,7 @@ function min($min) {
 function max($max) {
     $max = (int) $max;
     return function($value) use ($max) {
-        return _toSize($value) <= $max ? null : Validation\violate('max', [
+        return toSize($value) <= $max ? null : Validation\violate('max', [
             'max' => $max,
         ]);
     };

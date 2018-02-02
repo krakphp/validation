@@ -33,6 +33,10 @@ class Kernel extends Cargo\Container\ContainerDecorator
         }
     }
 
+    public function aliases(array $aliases) {
+        $this['krak.validation.aliases'] = array_merge($this['krak.validation.aliases'], $aliases);
+    }
+
     public function messages(array $messages) {
         $this->pushMessageStore(new MessageStore\ArrayMessageStore($messages));
     }

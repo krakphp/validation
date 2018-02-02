@@ -44,6 +44,7 @@
     "require": {
         "krak/cargo": "^0.2.3",
         "krak/invoke": "^0.1.0",
-        "nikic/iter": "^1.4"
+        "nikic/iter": "^1.4",
+        "peridot-php/leo": "^1.6"
     }
 }
