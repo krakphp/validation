@@ -4,12 +4,13 @@ namespace Krak\Validation;
 
 use ArrayAccess;
 use ArrayIterator;
+use Countable;
 use IteratorAggregate;
 use LogicException;
 
 use iter;
 
-class ViolationCollection implements ArrayAccess, IteratorAggregate
+class ViolationCollection implements ArrayAccess, IteratorAggregate, Countable
 {
     use ViolationParams;
 
@@ -108,6 +109,10 @@ class ViolationCollection implements ArrayAccess, IteratorAggregate
 
     public function getIterator() {
         return new ArrayIterator($this->violations);
+    }
+
+    public function count() {
+        return count($this->violations);
     }
 
     public function offsetSet($offset, $value) {

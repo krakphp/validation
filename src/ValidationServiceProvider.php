@@ -10,7 +10,10 @@ class ValidationServiceProvider implements Cargo\ServiceProvider
 {
     public function register(Cargo\Container $c) {
         $c[ValidationContext\FluentValidationBuilder::class] = function($c) {
-            return new ValidationContext\FluentValidationBuilder($c['krak.validation.validators']);
+            return new ValidationContext\FluentValidationBuilder(
+                $c['krak.validation.validators'],
+                $c['krak.validation.aliases']
+            );
         };
         $c[ValidationContext::class] = function($c) {
             $invoke = new ValidatorInvoke(new Invoke\CallableInvoke());
@@ -36,6 +39,7 @@ class ValidationServiceProvider implements Cargo\ServiceProvider
         $c['krak.validation.messages'] = new MessageStore\StackedMessageStore();
         $c['krak.validation.default_message'] = "The {{attribute}} is invalid.";
         $c['krak.validation.validators'] = new ArrayObject();
+        $c['krak.validation.aliases'] = [];
         $c['krak.validation.context'] = new ArrayObject([
             'container' => Cargo\toInterop($c),
         ]);

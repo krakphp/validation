@@ -8,9 +8,11 @@ use function Krak\Validation\Validators\pipe;
 class FluentValidationBuilder
 {
     private $validators;
+    private $aliases;
 
-    public function __construct($validators) {
+    public function __construct($validators, $aliases = []) {
         $this->validators = $validators;
+        $this->aliases = $aliases;
     }
 
     public function buildValidator($validator) {
@@ -25,6 +27,7 @@ class FluentValidationBuilder
                 $args = [];
             }
 
+            $validator = $this->resolveAlias($validator);
             if (isset($this->validators[$validator])) {
                 $validator_def = $this->validators[$validator];
                 if (is_callable($validator_def)) {
@@ -40,5 +43,15 @@ class FluentValidationBuilder
         }, $parts);
 
         return count($validators) > 1 ? pipe(...$validators) : $validators[0];
+    }
+
+    private function resolveAlias($validator, $prev_validators = []) {
+        if (in_array($validator, $prev_validators)) {
+            throw new Validation\Exception\CircularReferenceException('A circular reference of aliases has been detected: ' . implode(' -> ', $prev_validators + [$validator]));
+        }
+
+        return isset($this->aliases[$validator])
+            ?  $this->resolveAlias($this->aliases[$validator], $prev_validators + [$validator])
+            : $validator;
     }
 }

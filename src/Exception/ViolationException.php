@@ -2,7 +2,7 @@
 
 namespace Krak\Validation\Exception;
 
-class ViolationException extends \Exception
+class ViolationException extends ValidationException
 {
     public $violation;
 
