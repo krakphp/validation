@@ -6,7 +6,7 @@ use Krak\Validation;
 
 class Entities extends AbstractDoctrineValidator
 {
-    public function validate($value, array $ctx = []) {
+    public function validate($values, array $ctx = []) {
         $om = $this->getObjectManager($ctx);
         $entity_name = $this->getModelPrefix($ctx) . $this->getEntityName();
         $repo = $om->getRepository($entity_name);
