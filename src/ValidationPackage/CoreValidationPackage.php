@@ -47,7 +47,7 @@ class CoreValidationPackage implements ValidationPackage
         $v->messages([
             'exists' => 'The {{attribute}} does not exist.',
             'required' => 'The {{attribute}} is required.',
-            'invalid_keys' => 'The {{attribute}} has invalid keys: {keys}',
+            'invalid_keys' => 'The {{attribute}} has invalid keys: {{keys}}',
 
             'between' => 'The {{attribute}} size must be between {{min}} and {{max}}',
             'length' => 'The {{attribute}} size cannot be greater than {{max}}',
