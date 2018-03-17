@@ -19,4 +19,13 @@ describe('Krak\Validation', function() {
         ]);
         expect($violations)->equal(null);
     });
+    it('can assert violations', function() {
+        $validation = new Validation\Kernel();
+
+        expect(function() use ($validation) {
+            $validation->make([
+                'id' => 'required|int'
+            ])->assert([]);
+        })->throw(Validation\Exception\ViolationException::class);
+    });
 });

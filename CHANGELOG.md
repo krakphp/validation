@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- New `assert` method on the WrappedValidator.
+
 ## 0.3.8 - 2018-02-01
 
 ### Added

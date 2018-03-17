@@ -108,6 +108,31 @@ try {
 }
 ```
 
+### Asserting Data
+
+A very common practice is using the Validation Kernel to make and validate domain data and then throw a ViolationException if any violations occur. This can be done simply via the `assert` method.
+
+```
+$validation = new Krak\Validation\Kernel();
+$validation->make([
+    'name' => 'required|string',
+    'age' => 'optional|integer|between:18,25',
+])->assert(['name' => 'RJ', 'age' => 100]);
+// this will have thrown a ViolationException due to the age constraint
+```
+
+You can then easily catch the `ViolationException` upstream and format the violation into readable errors:
+
+```
+try {
+    return response($storeUser($userData), 201);
+} catch (Krak\Validation\Exception\ViolationException $e) {
+    return response([
+        'errors' => $e->violation->format(),
+    ], 422);
+}
+```
+
 ## Validation Packages
 
 Validation Packages are simple extensions to the Validation\Kernel that register validators and messages into the system.

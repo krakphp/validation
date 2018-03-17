@@ -56,6 +56,13 @@ class WrappedValidator implements FormatMessage, FormatViolations {
         return $this->result;
     }
 
+    public function assert($value, array $ctx = []) {
+        $violations = $this->validate($value, $ctx);
+        if ($violations) {
+            $violations->abort();
+        }
+    }
+
     public function failed() {
         if (!$this->has_run) {
             throw new \LogicException("Cannot check if validation failed when the validation has not run yet.");

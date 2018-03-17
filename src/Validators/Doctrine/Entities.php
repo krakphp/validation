@@ -18,7 +18,6 @@ class Entities extends AbstractDoctrineValidator
             return;
         }
 
-
         return Validation\violate(
             'doctrine_entities',
             ['entity_name' => $this->getEntityName(), 'field' => $this->getField()]
