@@ -6,6 +6,11 @@
 
 - New `assert` method on the WrappedValidator.
 
+## 0.3.9 - 2018-03-06
+
+- Fixing bug with invalid keys message
+- Fixing typo in `doctrine_entities`
+
 ## 0.3.8 - 2018-02-01
 
 ### Added
