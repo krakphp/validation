@@ -112,7 +112,7 @@ try {
 
 A very common practice is using the Validation Kernel to make and validate domain data and then throw a ViolationException if any violations occur. This can be done simply via the `assert` method.
 
-```
+```php
 $validation = new Krak\Validation\Kernel();
 $validation->make([
     'name' => 'required|string',
@@ -123,7 +123,7 @@ $validation->make([
 
 You can then easily catch the `ViolationException` upstream and format the violation into readable errors:
 
-```
+```php
 try {
     return response($storeUser($userData), 201);
 } catch (Krak\Validation\Exception\ViolationException $e) {
