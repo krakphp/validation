@@ -85,7 +85,7 @@ function pipeAll(...$validators) {
         }
 
         if ($violations) {
-            return Validation\violations($errors);
+            return Validation\violations($violations);
         }
     };
 }

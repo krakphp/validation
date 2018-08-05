@@ -54,6 +54,14 @@ describe('Validators', function() {
             ]);
         });
     });
+    describe('#pipeAll', function() {
+        it('pipes all validators one after the next regardless if one fails', function() {
+            $vs = Assert\pipeAll([Assert\typeString(), Assert\typeArray()])(1);
+            assert(count($vs) == 2);
+            assert($vs[0]->code == "string");
+            assert($vs[1]->code == "array");
+        });
+    });
     describe('#any', function() {
         $v = Assert\any([Assert\typeInteger(), Assert\typeString()]);
         it('passes if any of the validators pass', function() use ($v) {
