@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Fixed bug with `pipeAll` when any errors occurred
+
 ## 0.3.10 - 2018-03-17
 
 ### Added
